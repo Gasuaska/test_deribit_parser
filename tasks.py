@@ -3,10 +3,10 @@ import logging
 
 from celery_app import celery_app
 
-from app.utils import get_price_from_service
-from app.database import SessionLocal, PriceDB
-from app.constants import TICKERS
-from app.exceptions import DeribitClientError
+from utils import get_price_from_service
+from database import SessionLocal, PriceDB
+from constants import TICKERS
+from exceptions import DeribitClientError
 
 @celery_app.task
 def fetch_prices():
