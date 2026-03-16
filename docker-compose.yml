@@ -28,7 +28,7 @@ services:
 
   celery_worker:
     image: gasuaska/test_deribit_parser:latest
-    command: celery -A celery_app.celery_app worker --loglevel=info
+    command: celery -A app.celery_app worker --loglevel=info
     depends_on:
       - redis
       - db
@@ -38,10 +38,11 @@ services:
 
   celery_beat:
     image: gasuaska/test_deribit_parser:latest
-    command: celery -A celery_app.celery_app beat --loglevel=info
+    command: celery -A app.celery_app beat --loglevel=info
     depends_on:
       - redis
     environment:
+      DATABASE_URL: ${DATABASE_URL}
       CELERY_BROKER_URL: redis://redis:6379/0
 
 volumes:

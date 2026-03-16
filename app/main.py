@@ -1,9 +1,7 @@
-import logging_config
-
 from fastapi import FastAPI
-from api import router
 import uvicorn
 
+from app.api import router
 
 app = FastAPI()
 

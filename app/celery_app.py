@@ -8,12 +8,12 @@ celery_app = Celery(
     'price_worker',
     broker=broker_url,
     backend=broker_url,
-    include=['tasks']
+    include=['app.tasks']
 )
 
 celery_app.conf.beat_schedule = {
     'fetch-prices-every-minute': {
-        'task': 'tasks.fetch_prices',
+        'task': 'app.tasks.fetch_prices',
         'schedule': 60.0
     }
 }

@@ -2,8 +2,10 @@ import logging
 
 from fastapi import APIRouter, Query, HTTPException
 
-from utils import get_prices_from_db, get_latest_price_from_db, validate_ticker
-from schemas import PriceResponse
+from app.utils import (get_prices_from_db,
+                    get_latest_price_from_db,
+                    validate_ticker)
+from app.schemas import PriceResponse
 
 router = APIRouter()
 

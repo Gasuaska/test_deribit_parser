@@ -7,8 +7,8 @@ from requests.exceptions import (HTTPError,
 
 from fastapi import HTTPException
 
-from database import SessionLocal, PriceDB
-from constants import DERIBIT_URL, TICKERS
+from app.database import SessionLocal, PriceDB
+from app.constants import DERIBIT_URL, TICKERS
 
 def validate_ticker(ticker: str):
     ticker = ticker.lower()
@@ -18,7 +18,7 @@ def validate_ticker(ticker: str):
     logging.debug(f'Ticker {ticker} validated')
     return ticker
 
-def get_price_from_service(ticker: str):
+def get_price_from_service(ticker: str) -> float:
     ticker = validate_ticker(ticker)
     params = {
         'index_name': ticker.lower()
@@ -49,8 +49,10 @@ def get_price_from_service(ticker: str):
 def get_prices_from_db(ticker: str, from_ts: int = None, to_ts: int = None):
     session = SessionLocal()
     query = session.query(PriceDB).filter(PriceDB.ticker==ticker)
-    if from_ts is not None and to_ts is not None:
-        query = query.filter(PriceDB.timestamp.between(from_ts, to_ts))
+    if from_ts is not None:
+        query = query.filter(PriceDB.timestamp >= from_ts)
+    if to_ts is not None:
+        query = query.filter(PriceDB.timestamp <= to_ts)
     result = query.all()
     session.close()
     logging.info(
